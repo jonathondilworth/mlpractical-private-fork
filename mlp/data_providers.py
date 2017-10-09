@@ -156,6 +156,11 @@ class MNISTDataProvider(DataProvider):
             to zero except for the column corresponding to the correct class
             which is equal to one.
         """
+        num_data = int_targets.size
+        target_vectors = np.zeros((num_data, num_classes))
+        for index, target in enumerate(int_targets):
+            target_vectors[index][targets[index]] = 1
+        return target_vectors
 
         """
         Not the most intuitive thing in the world (the for loop)
@@ -176,12 +181,6 @@ class MNISTDataProvider(DataProvider):
         [0,0,0,0,0,1,0,0,0,0] <- index: 4 (represents value 5)
 
         """
-        
-        num_data = int_targets.size
-        target_vectors = np.zeros((num_data, num_classes))
-        for index, target in enumerate(int_targets):
-            target_vectors[index][targets[index]] = 1
-        return target_vectors
 
 
 class MetOfficeDataProvider(DataProvider):
