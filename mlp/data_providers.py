@@ -141,7 +141,7 @@ class MNISTDataProvider(DataProvider):
     def __next__(self):
         return self.next()
 
-    def to_one_of_k(self, int_targets):
+    def to_one_of_k(self, int_targets, num_classes=10):
         """Converts integer coded class target to 1 of K coded targets.
 
         Args:
@@ -156,7 +156,32 @@ class MNISTDataProvider(DataProvider):
             to zero except for the column corresponding to the correct class
             which is equal to one.
         """
-        raise NotImplementedError()
+
+        """
+        Not the most intuitive thing in the world (the for loop)
+        enumerate(targets) allows us to iterate through the nparray
+        the index of the target_vector within the loop being is the same
+        as the enumerated value within int_targets.
+
+        Think about it: [1,7,3,4,5] can otherwise be thought of as:
+
+        enumerated (essentially turned into a map / indexed array):
+
+        [0 => 1, 1 => 7, 2 => 3, 3 => 4, 4 => 5]
+
+        [0,1,0,0,0,0,0,0,0,0] <- index: 0 (represents value 1)
+        [0,0,0,0,0,0,0,1,0,0] <- index: 1 (represents value 7)
+        [0,0,0,1,0,0,0,0,0,0] <- index: 2 (represents value 3)
+        [0,0,0,0,1,0,0,0,0,0] <- index: 3 (represents value 4)
+        [0,0,0,0,0,1,0,0,0,0] <- index: 4 (represents value 5)
+
+        """
+        
+        num_data = int_targets.size
+        target_vectors = np.zeros((num_data, num_classes))
+        for index, target in enumerate(int_targets):
+            target_vectors[index][targets[index]] = 1
+        return target_vectors
 
 
 class MetOfficeDataProvider(DataProvider):
