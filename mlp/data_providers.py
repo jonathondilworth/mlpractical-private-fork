@@ -159,7 +159,7 @@ class MNISTDataProvider(DataProvider):
         num_data = int_targets.size
         target_vectors = np.zeros((num_data, num_classes))
         for index, target in enumerate(int_targets):
-            target_vectors[index][targets[index]] = 1
+            target_vectors[index][int_targets[index]] = 1
         return target_vectors
 
         """
