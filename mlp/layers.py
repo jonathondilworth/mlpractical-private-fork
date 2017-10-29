@@ -12,6 +12,11 @@ methods for getting and setting parameter and calculating gradients with
 respect to the layer parameters.
 """
 
+"""
+Quick note: to fix resolve some bugs in the mlp library I created a new
+branch for the coursework and then merged lab5 into it
+"""
+
 import numpy as np
 import mlp.initialisers as init
 
@@ -65,6 +70,13 @@ class LayerWithParameters(Layer):
             List of arrays of gradients with respect to the layer parameters
             with parameter gradients appearing in same order in tuple as
             returned from `get_params` method.
+        """
+        raise NotImplementedError()
+
+    def params_penalty(self):
+        """Returns the parameter dependent penalty term for this layer.
+
+        If no parameter-dependent penalty terms are set this returns zero.
         """
         raise NotImplementedError()
 
@@ -401,7 +413,9 @@ class SoftmaxLayer(Layer):
         Returns:
             outputs: Array of layer outputs of shape (batch_size, output_dim).
         """
-        exp_inputs = np.exp(inputs)
+        # subtract max inside exponential to improve numerical stability -
+        # when we divide through by sum this term cancels
+        exp_inputs = np.exp(inputs - inputs.max(-1)[:, None])
         return exp_inputs / exp_inputs.sum(-1)[:, None]
 
     def bprop(self, inputs, outputs, grads_wrt_outputs):
@@ -427,3 +441,62 @@ class SoftmaxLayer(Layer):
     def __repr__(self):
         return 'SoftmaxLayer'
 
+class RadialBasisFunctionLayer(Layer):
+    """Layer implementing projection to a grid of radial basis functions."""
+
+    def __init__(self, grid_dim, intervals=[[0., 1.]]):
+        """Creates a radial basis function layer object.
+
+        Args:
+            grid_dim: Integer specifying how many basis function to use in
+                grid across input space per dimension (so total number of
+                basis functions will be grid_dim**input_dim)
+            intervals: List of intervals (two element lists or tuples)
+                specifying extents of axis-aligned region in input-space to
+                tile basis functions in grid across. For example for a 2D input
+                space spanning [0, 1] x [0, 1] use intervals=[[0, 1], [0, 1]].
+        """
+        num_basis = grid_dim**len(intervals)
+        self.centres = np.array(np.meshgrid(*[
+            np.linspace(low, high, grid_dim) for (low, high) in intervals])
+        ).reshape((len(intervals), -1))
+        self.scales = np.array([
+            [(high - low) * 1. / grid_dim] for (low, high) in intervals])
+
+    def fprop(self, inputs):
+        """Forward propagates activations through the layer transformation.
+
+        Args:
+            inputs: Array of layer inputs of shape (batch_size, input_dim).
+
+        Returns:
+            outputs: Array of layer outputs of shape (batch_size, output_dim).
+        """
+        return np.exp(-(inputs[..., None] - self.centres[None, ...])**2 /
+                      self.scales**2).reshape((inputs.shape[0], -1))
+
+    def bprop(self, inputs, outputs, grads_wrt_outputs):
+        """Back propagates gradients through a layer.
+
+        Given gradients with respect to the outputs of the layer calculates the
+        gradients with respect to the layer inputs.
+
+        Args:
+            inputs: Array of layer inputs of shape (batch_size, input_dim).
+            outputs: Array of layer outputs calculated in forward pass of
+                shape (batch_size, output_dim).
+            grads_wrt_outputs: Array of gradients with respect to the layer
+                outputs of shape (batch_size, output_dim).
+
+        Returns:
+            Array of gradients with respect to the layer inputs of shape
+            (batch_size, input_dim).
+        """
+        num_basis = self.centres.shape[1]
+        return -2 * (
+            ((inputs[..., None] - self.centres[None, ...]) / self.scales**2) *
+            grads_wrt_outputs.reshape((inputs.shape[0], -1, num_basis))
+        ).sum(-1)
+
+    def __repr__(self):
+        return 'RadialBasisFunctionLayer(grid_dim={0})'.format(self.grid_dim)
