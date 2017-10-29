@@ -64,6 +64,13 @@ class NormalInit(object):
     def __call__(self, shape):
         return self.rng.normal(loc=self.mean, scale=self.std, size=shape)
 
+
+class SELUInit(object):
+    """SELU Initializer."""
+    # write code that implements SELU initialization. Take inspiration from the other initializers in this file.
+    pass
+
+
 class GlorotUniformInit(object):
     """Glorot and Bengio (2010) random uniform weights initialiser.
 
