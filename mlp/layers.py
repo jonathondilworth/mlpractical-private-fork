@@ -282,6 +282,7 @@ class SigmoidLayer(Layer):
         return 'SigmoidLayer'
 
 
+
 class TanhLayer(Layer):
     """Layer implementing an element-wise hyperbolic tangent transformation."""
 
@@ -319,20 +320,28 @@ class ReluLayer(Layer):
         Given gradients with respect to the outputs of the layer calculates the
         gradients with respect to the layer inputs.
         """
-        return (outputs > 0) * grads_wrt_outputs
+        return (inputs > 0) * grads_wrt_outputs
 
     def __repr__(self):
         return 'ReluLayer'
 
+"""
+Note: merged lab5 and coursework_1 to help resolve bugs in mlp library
+module: tqdm in optimisers was causing some issues
+"""
+
 class LeakyReluLayer(Layer):
     """Layer implementing an element-wise leaky rectified linear transformation."""
+
+    def lrelu_activate(self, x):
+        return np.where(x <= 0, 0.01 * x, x)
+
     def fprop(self, inputs):
         """Forward propagates activations through the layer transformation.
 
         For inputs `x` and outputs `y` this corresponds to `y = max(0, x)`.
         """
-        outputs = inputs #remove and replace with your code
-        return outputs
+        return self.lrelu_activate(inputs)
 
     def bprop(self, inputs, outputs, grads_wrt_outputs):
         """Back propagates gradients through a layer.
@@ -340,8 +349,7 @@ class LeakyReluLayer(Layer):
         Given gradients with respect to the outputs of the layer calculates the
         gradients with respect to the layer inputs.
         """
-        gradients = inputs #remove and replace with your code
-        return gradients
+        return ((inputs > 0) * grads_wrt_outputs) + ((inputs <= 0) * (grads_wrt_outputs * 0.01))
 
     def __repr__(self):
         return 'LeakyReluLayer'
@@ -349,13 +357,22 @@ class LeakyReluLayer(Layer):
 class ELULayer(Layer):
     """Layer implementing an ELU activation."""
 
+    # hp_a: hyperparameter alpha (ELU tunable param)
+    hp_a = 1.0
+
+    def elu_activate(self, x):
+        return np.where(x <= 0, self.hp_a * (np.exp(x) - 1), x)
+
+    def elu_update(self, x):
+        return np.where(x <= 0, self.elu_activate(x) + self.hp_a, 1)
+
     def fprop(self, inputs):
         """Forward propagates activations through the layer transformation.
 
         For inputs `x` and outputs `y` this corresponds to `y = max(0, x)`.
         """
-        outputs = inputs #remove and replace with your code
-        return outputs
+        return self.elu_activate(inputs)
+
 
     def bprop(self, inputs, outputs, grads_wrt_outputs):
         """Back propagates gradients through a layer.
@@ -363,8 +380,8 @@ class ELULayer(Layer):
         Given gradients with respect to the outputs of the layer calculates the
         gradients with respect to the layer inputs.
         """
-        gradients = inputs #remove and replace with your code
-        return gradients
+        return self.elu_update(inputs) * grads_wrt_outputs
+
 
     def __repr__(self):
         return 'ELULayer'
@@ -373,13 +390,21 @@ class SELULayer(Layer):
     """Layer implementing a Self Normalizing ELU."""
     #α01 ≈ 1.6733 and λ01 ≈ 1.0507
 
+    hp_a = 1.6733
+    hp_l = 1.0507
+
+    def selu_activate(self, x):
+        return self.hp_l * np.where(x <= 0, self.hp_a * np.exp(x) - self.hp_a, x)
+
+    def selu_update(self, x):
+        return np.where(x <= 0, self.hp_l * self.hp_a * np.exp(x), self.hp_l)
+
     def fprop(self, inputs):
         """Forward propagates activations through the layer transformation.
 
         For inputs `x` and outputs `y` this corresponds to `y = max(0, x)`.
         """
-        outputs = inputs #remove and replace with your code
-        return outputs
+        return self.selu_activate(inputs)
 
     def bprop(self, inputs, outputs, grads_wrt_outputs):
         """Back propagates gradients through a layer.
@@ -387,8 +412,7 @@ class SELULayer(Layer):
         Given gradients with respect to the outputs of the layer calculates the
         gradients with respect to the layer inputs.
         """
-        gradients = inputs #remove and replace with your code
-        return gradients
+        return self.selu_update(inputs) * grads_wrt_outputs
 
     def __repr__(self):
         return 'SELULayer'
