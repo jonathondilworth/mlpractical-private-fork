@@ -9,6 +9,7 @@ from mlp.models import MultipleLayerModel
 from mlp.initialisers import ConstantInit, GlorotUniformInit, SELUInit
 from mlp.learning_rules import GradientDescentLearningRule
 from mlp.optimisers import Optimiser
+import json
 
 def train_model_and_plot_stats(
         model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True, output_p=True, name="test"):
@@ -67,30 +68,174 @@ rng.seed(seed)
 train_data.reset()
 valid_data.reset()
 
-learning_rate = 0.1
-num_epochs = 2
-stats_interval = 1
-input_dim, output_dim, hidden_dim = 784, 10, 100
+def train_and_process(p_seed, p_learning_rate, p_num_epochs, p_stats_interval):
 
-weights_init = GlorotUniformInit(rng=rng)
-biases_init = ConstantInit(0.)
-model = MultipleLayerModel([
-    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
-    SigmoidLayer(),
-    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
-    SigmoidLayer(),
-    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
-])
+	r_stats = [None] * 5
 
-error = CrossEntropySoftmaxError()
-# Use a basic gradient descent learning rule
-learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+	# SIGMOID BASELINE
 
-#Remember to use notebook=False when you write a script to be run in a terminal
-_ = train_model_and_plot_stats(
-    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+	rng.seed(p_seed)
+	train_data.reset()
+	valid_data.reset()
 
-plt.savefig('test123.svg', dpi=None, facecolor='w', edgecolor='w',
-        orientation='portrait', papertype=None, format='svg',
-        transparent=False, bbox_inches=None, pad_inches=0.1,
-        frameon=None)
+	learning_rate = p_learning_rate
+	num_epochs = p_num_epochs
+	stats_interval = p_stats_interval
+	input_dim, output_dim, hidden_dim = 784, 10, 100
+
+	weights_init = GlorotUniformInit(rng=rng)
+	biases_init = ConstantInit(0.)
+	model = MultipleLayerModel([
+	    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
+	    SigmoidLayer(),
+	    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
+	    SigmoidLayer(),
+	    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
+	])
+
+	error = CrossEntropySoftmaxError()
+	# Use a basic gradient descent learning rule
+	learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+
+	#Remember to use notebook=False when you write a script to be run in a terminal
+	_ = train_model_and_plot_stats(
+	    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+
+	r_stats[0] = _[0]
+
+	# RELU BASELINE
+
+	rng.seed(p_seed)
+	train_data.reset()
+	valid_data.reset()
+
+	weights_init = GlorotUniformInit(rng=rng)
+	biases_init = ConstantInit(0.)
+	model = MultipleLayerModel([
+	    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
+	    ReluLayer(),
+	    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
+	    ReluLayer(),
+	    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
+	])
+
+	error = CrossEntropySoftmaxError()
+	# Use a basic gradient descent learning rule
+	learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+
+	#Remember to use notebook=False when you write a script to be run in a terminal
+	_ = train_model_and_plot_stats(
+	    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+
+	r_stats[1] = _[0]
+
+	# LRELU
+
+	rng.seed(p_seed)
+	train_data.reset()
+	valid_data.reset()
+
+	weights_init = GlorotUniformInit(rng=rng)
+	biases_init = ConstantInit(0.)
+	model = MultipleLayerModel([
+	    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
+	    LeakyReluLayer(),
+	    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
+	    LeakyReluLayer(),
+	    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
+	])
+
+	error = CrossEntropySoftmaxError()
+	# Use a basic gradient descent learning rule
+	learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+
+	#Remember to use notebook=False when you write a script to be run in a terminal
+	_ = train_model_and_plot_stats(
+	    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+
+	r_stats[2] = _[0]
+
+	# ELU
+
+	rng.seed(p_seed)
+	train_data.reset()
+	valid_data.reset()
+
+	weights_init = GlorotUniformInit(rng=rng)
+	biases_init = ConstantInit(0.)
+	model = MultipleLayerModel([
+	    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
+	    ELULayer(),
+	    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
+	    ELULayer(),
+	    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
+	])
+
+	error = CrossEntropySoftmaxError()
+	# Use a basic gradient descent learning rule
+	learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+
+	#Remember to use notebook=False when you write a script to be run in a terminal
+	_ = train_model_and_plot_stats(
+	    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+
+	r_stats[3] = _[0]
+
+	# SELU
+
+	rng.seed(p_seed)
+	train_data.reset()
+	valid_data.reset()
+
+	weights_init = GlorotUniformInit(rng=rng)
+	biases_init = ConstantInit(0.)
+
+	model = MultipleLayerModel([
+	    AffineLayer(input_dim, hidden_dim, weights_init, biases_init), 
+	    SELULayer(),
+	    AffineLayer(hidden_dim, hidden_dim, weights_init, biases_init), 
+	    SELULayer(),
+	    AffineLayer(hidden_dim, output_dim, weights_init, biases_init),
+	])
+
+	error = CrossEntropySoftmaxError()
+	# Use a basic gradient descent learning rule
+	learning_rule = GradientDescentLearningRule(learning_rate=learning_rate)
+
+	#Remember to use notebook=False when you write a script to be run in a terminal
+	_ = train_model_and_plot_stats(
+	    model, error, learning_rule, train_data, valid_data, num_epochs, stats_interval, notebook=True)
+
+	r_stats[4] = _[0]
+
+	return r_stats
+
+all_stats_005_1 = train_and_process(6102016, 0.05, 3, 1)
+all_stats_005_2 = train_and_process(1237878, 0.05, 3, 1)
+all_stats_005_3 = train_and_process(2673676, 0.05, 3, 1)
+all_stats_005_4 = train_and_process(8978283, 0.05, 3, 1)
+all_stats_005_5 = train_and_process(5627351, 0.05, 3, 1)
+
+all_stats_005_sigmoid = [all_stats_005_1[0], all_stats_005_2[0], all_stats_005_3[0], all_stats_005_4[0], all_stats_005_5[0]]
+all_stats_005_relu = [all_stats_005_1[1], all_stats_005_2[1], all_stats_005_3[1], all_stats_005_4[1], all_stats_005_5[1]]
+all_stats_005_lrelu = [all_stats_005_1[2], all_stats_005_2[2], all_stats_005_3[2], all_stats_005_4[2], all_stats_005_5[2]]
+all_stats_005_elu = [all_stats_005_1[3], all_stats_005_2[3], all_stats_005_3[3], all_stats_005_4[3], all_stats_005_5[3]]
+all_stats_005_selu = [all_stats_005_1[4], all_stats_005_2[4], all_stats_005_3[4], all_stats_005_4[4], all_stats_005_5[4]]
+
+sigmoid_mean = np.mean(all_stats_005_sigmoid, axis=0)
+relu_mean = np.mean(all_stats_005_relu, axis=0)
+lrelu_mean = np.mean(all_stats_005_lrelu, axis=0)
+elu_mean = np.mean(all_stats_005_elu, axis=0)
+selu_mean = np.mean(all_stats_005_selu, axis=0)
+
+print(sigmoid_mean)
+print(relu_mean)
+print(lrelu_mean)
+print(elu_mean)
+print(selu_mean)
+
+all_stats_005_avg = [sigmoid_mean, relu_mean, lrelu_mean, elu_mean, selu_mean]
+
+np.save('all_stats_005_avg.npy', all_stats_005_avg)
+
+with open('all_stats_005_avg.txt', 'w') as f: f.write(json.dumps(all_stats_005_avg, default=lambda x: list(x), indent=4))
