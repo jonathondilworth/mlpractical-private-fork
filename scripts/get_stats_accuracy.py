@@ -16,15 +16,15 @@ stats_interval = 1
 
 keys = {'acc(train)': 1, 'acc(valid)': 3, 'error(train)': 0, 'error(valid)': 2, 'params_penalty': 4}
 
-five_layers = np.load('5_layer.npy')
-six_layers = np.load('6_layer.npy')
-seven_layers = np.load('7_layer.npy')
-eight_layers = np.load('8_layer.npy')
+five_layers = np.load('3_layer.npy')
+six_layers = np.load('4_layer.npy')
+seven_layers = np.load('5_layer.npy')
+eight_layers = np.load('6_layer.npy')
 
 # Training Error, Learning Rate: 0.05
 
-y_major_ticks = np.arange(0.92, 0.99, 0.02)
-y_minor_ticks = np.arange(0.92, 0.99, 0.005)
+y_major_ticks = np.arange(0.92, 1.01, 0.02)
+y_minor_ticks = np.arange(0.92, 1.01, 0.005)
 x_major_ticks = np.arange(0, 101, 20)
 x_minor_ticks = np.arange(0, 101, 5)
 
@@ -49,7 +49,7 @@ ax_1.grid(which='both')
 ax_1.grid(which='minor', alpha=0.2)                                               
 ax_1.grid(which='major', alpha=0.5)
 ax_1.legend(loc=0)
-ax_1.set_title('Five Layers')
+ax_1.set_title('Three Layers')
 
 # Training Error, Learing Rate: 0.1
 
@@ -72,7 +72,7 @@ ax_2.grid(which='both')
 ax_2.grid(which='minor', alpha=0.2)                                               
 ax_2.grid(which='major', alpha=0.5)
 ax_2.legend(loc=0)
-ax_2.set_title('Six Layers')
+ax_2.set_title('Four Layers')
 
 # Training Error, Learning Rate: 0.2
 
@@ -94,7 +94,7 @@ ax_3.grid(which='both')
 ax_3.grid(which='minor', alpha=0.2)                                               
 ax_3.grid(which='major', alpha=0.5)
 ax_3.legend(loc=0)
-ax_3.set_title('Seven Layers')
+ax_3.set_title('Five Layers')
 
 # Training Error, Learning Rate: 0.5
 
@@ -116,12 +116,12 @@ ax_4.grid(which='both')
 ax_4.grid(which='minor', alpha=0.2)                                               
 ax_4.grid(which='major', alpha=0.5)
 ax_4.legend(loc=0)
-ax_4.set_title('Eight Layers')
+ax_4.set_title('Six Layers')
 
 fig_1.text(0.5, 0.04, 'Epoch', ha='center', fontsize=16)
 fig_1.text(0.04, 0.5, 'Step Size', va='center', rotation='vertical', fontsize=16)
 
-plt.suptitle("How the number of hidden layers affect training error and accuracy")
+plt.suptitle("How the number of hidden layers affect training error", fontsize=16)
 
 plt.savefig('hidden_layers_affects_svg.svg', dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format='svg',
