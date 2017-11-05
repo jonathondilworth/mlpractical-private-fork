@@ -66,7 +66,7 @@
 ]
 
 \begin{abstract} 
-The abstract should be 100--200 words long,  providing a concise summary of the contents of your report.
+The problem domain considered within this report pertains to the use of various activation functions within deep neural networks. Specifically, the effect that leaky rectified linear units (LReLUs), exponential linear units (ELUs) and scaled exponential linear units (SELUs) have on the error and accuracy of deep neural network models and how these functions compare to a baseline ReLU and sigmoid function. Within the latter half of this report, an investigation into the effect of varying the number of hidden layers within neural nets is presented. Fully connected neural networks, initially with two hidden layers, then later spanning up to six layers were used. It was found that ReLU variant activation functions consistently outperformed standard sigmoid units, but there was not much variation in performance between ReLU variants for this particular problem domain\footnote{Classifying handwritten digits within the MNIST dataset.}. Whilst it was concluded that fewer layers increased the speed of convergence for this particular problem, the accuracy still reached the same level regardless of the number of layers utilised within the outlined neural network architecture.
 \end{abstract} 
 
 \section{Introduction}
@@ -189,7 +189,7 @@ Throughout the experiments the sigmoid and ReLU activation functions were used a
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-%\centerline{\includegraphics[width=\columnwidth]{sigmoid_vs_relu_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{sigmoid_vs_relu}}
 \centerline{\includesvg[width=\columnwidth]{sigmoid_vs_relu}}
 \caption{Training and validation error, with training and validation accuracy plotted agaisnt each epoch for step sizes: 0.05, 0.1, 0.2 and 0.5.}
 \label{fig:sigmoid-vs-relu}
@@ -247,7 +247,7 @@ various activation functions on the MNIST dataset.}
 \vskip -3mm
 \end{table}
 
-A value of 0.2 was chosen for the step size because this value provided the highest ceiling with regards to the level of accuracy that could be reached, see figure ~\ref{fig:sens-analysis-val-acc} and table ~\ref{fig:MNIST-table}.
+A value of 0.2 was chosen for the step size because this value provided the highest ceiling with regards to the level of accuracy that could be reached, see figure ~\ref{fig:sens-analysis-val-acc} and table 1.
 
 \begin{figure}[tb]
 \vskip 5mm
@@ -301,6 +301,8 @@ It was found that additional hidden layers within the outlined network architect
 \subsection{Future Work}
 
 An investigation into the modification of weight initialisation methods was going to be included within this report, but time constraining factors means that it is likely to appear within future work.
+
+\newpage
 
 \bibliography{example-refs}
 
