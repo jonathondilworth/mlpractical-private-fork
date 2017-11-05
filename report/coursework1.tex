@@ -273,9 +273,6 @@ A value of 0.2 was chosen for the step size because this value provided the high
 
 Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation error, and figure ~\ref{02_relu_variants_accuracy_svg} presents the validation accuracy of all four ReLU variant functions.
 
-\section{Deep neural network experiments}
-\label{sec:dnnexpts}
-
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
@@ -286,6 +283,9 @@ Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation e
 \end{center}
 \vskip -5mm
 \end{figure}
+
+\section{Deep neural network experiments}
+\label{sec:dnnexpts}
 
 Through varying the number of hidden layers within our neural network architecture (ranging between three and six hidden layers), it is possible to plot the training accuracy and validation accuracy for each layer increment. The learning rate was kept at a value of 0.2 and the ELU activation function was chosen, as it provided the best performance in the previous experiment. It was found that the accuracy generally levels out to the same point regardless of the number of layers. However, it is shown in figure ~\ref{fig:dnn-accuracy} that the more hidden layers that are used, the longer the time to convergence. The behaviour of a deeper network appears similar to initially increasing the step size.
 
