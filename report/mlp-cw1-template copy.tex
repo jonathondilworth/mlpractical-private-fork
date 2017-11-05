@@ -12,6 +12,7 @@
 
 % For figures
 \usepackage{graphicx}
+\usepackage{svg}
 \usepackage{subfigure}
 
 % For citations
@@ -188,7 +189,8 @@ Throughout the experiments the sigmoid and ReLU activation functions were used a
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{sigmoid_vs_relu_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{sigmoid_vs_relu_svg}}
+\centerline{\includesvg[width=\columnwidth]{sigmoid_vs_relu_svg}}
 \caption{Training and validation error, with training and validation accuracy plotted agaisnt each epoch for step sizes: 0.05, 0.1, 0.2 and 0.5.}
 \label{fig:sigmoid-vs-relu}
 \end{center}
@@ -212,7 +214,8 @@ A value of 0.2 was chosen for the step size because this value provided the high
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{validation_acc_sens_analysis_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{validation_acc_sens_analysis_svg}}
+\centerline{\includesvg[width=\columnwidth]{validation_acc_sens_analysis_svg}}
 \caption{Validation accuracy for various step sizes (sensitivity analysis).}
 \label{fig:sens-analysis-val-acc}
 \end{center}
@@ -251,7 +254,8 @@ Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation e
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{02_relu_variants_error_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{02_relu_variants_error_svg}}
+\centerline{\includesvg[width=\columnwidth]{02_relu_variants_error_svg}}
 \caption{ReLU, LReLU, ELU and SELU errors plotted against each epoch.}
 \label{fig:relu-variants-error}
 \end{center}
@@ -261,7 +265,8 @@ Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation e
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{02_relu_variants_accuracy_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{02_relu_variants_accuracy_svg}}
+\centerline{\includesvg[width=\columnwidth]{02_relu_variants_accuracy_svg}}
 \caption{ReLU, LReLU, ELU and SELU accuracy plotted against each epoch.}
 \label{fig:relu-variants-accuracy}
 \end{center}
@@ -276,7 +281,8 @@ Through varying the number of hidden layers within our neural network architectu
 \begin{figure}[tb]
 \vskip 5mm
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{hidden_layers_affects_svg}}
+%\centerline{\includegraphics[width=\columnwidth]{hidden_layers_affects_svg}}
+\centerline{\includesvg[width=\columnwidth]{hidden_layers_affects_svg}}
 \caption{Relationship between the number of layers within a deep neural network architecture and the training and validation accuracy.}
 \label{fig:dnn-accuracy}
 \end{center}
