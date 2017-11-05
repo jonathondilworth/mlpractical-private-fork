@@ -119,7 +119,7 @@ ax_4.legend(loc=0)
 ax_4.set_title('Six Layers')
 
 fig_1.text(0.5, 0.04, 'Epoch', ha='center', fontsize=16)
-fig_1.text(0.04, 0.5, 'Step Size', va='center', rotation='vertical', fontsize=16)
+fig_1.text(0.04, 0.5, 'Accuracy', va='center', rotation='vertical', fontsize=16)
 
 plt.suptitle("How the number of hidden layers affect training error", fontsize=16)
 
