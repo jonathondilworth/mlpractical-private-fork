@@ -190,7 +190,7 @@ Throughout the experiments the sigmoid and ReLU activation functions were used a
 \vskip 5mm
 \begin{center}
 %\centerline{\includegraphics[width=\columnwidth]{sigmoid_vs_relu_svg}}
-\centerline{\includesvg[width=\columnwidth]{sigmoid_vs_relu_svg}}
+\centerline{\includesvg[width=\columnwidth]{sigmoid_vs_relu}}
 \caption{Training and validation error, with training and validation accuracy plotted agaisnt each epoch for step sizes: 0.05, 0.1, 0.2 and 0.5.}
 \label{fig:sigmoid-vs-relu}
 \end{center}
@@ -208,8 +208,6 @@ In order to find an appropriate value for the step size a sensitivity analysis w
   \item 8978283
   \item 5627351
 \end{itemize}
-
-A value of 0.2 was chosen for the step size because this value provided the highest ceiling with regards to the level of accuracy that could be reached, see figure ~\ref{fig:sens-analysis-val-acc} and table ~\ref{fig:MNIST-table}.
 
 \begin{figure}[tb]
 \vskip 5mm
@@ -230,7 +228,7 @@ A value of 0.2 was chosen for the step size because this value provided the high
 \begin{tabular}{lcccr}
 \hline
 \abovespace\belowspace
-Activation Function & Learning Rate & Validation Error (15 epochs) \\
+Function & Step Size & Validation Error (15 epochs) \\
 \hline
 \abovespace
 ReLU    & 0.2& 0.094 \\
@@ -249,7 +247,7 @@ various activation functions on the MNIST dataset.}
 \vskip -3mm
 \end{table}
 
-Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation error, and figure ~\ref{02_relu_variants_accuracy_svg} presents the validation accuracy of all four ReLU variant functions.
+A value of 0.2 was chosen for the step size because this value provided the highest ceiling with regards to the level of accuracy that could be reached, see figure ~\ref{fig:sens-analysis-val-acc} and table ~\ref{fig:MNIST-table}.
 
 \begin{figure}[tb]
 \vskip 5mm
@@ -273,10 +271,10 @@ Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation e
 \vskip -5mm
 \end{figure}
 
+Figure ~\ref{fig:02_relu_variants_error_svg} shows the training and validation error, and figure ~\ref{02_relu_variants_accuracy_svg} presents the validation accuracy of all four ReLU variant functions.
+
 \section{Deep neural network experiments}
 \label{sec:dnnexpts}
-
-Through varying the number of hidden layers within our neural network architecture (ranging between three and six hidden layers), it is possible to plot the training accuracy and validation accuracy for each layer increment. The learning rate was kept at a value of 0.2 and the ELU activation function was chosen, as it provided the best performance in the previous experiment. It was found that the accuracy generally levels out to the same point regardless of the number of layers. However, it is shown in figure ~\ref{fig:dnn-accuracy} that the more hidden layers that are used, the longer the time to convergence. The behaviour of a deeper network appears similar to initially increasing the step size.
 
 \begin{figure}[tb]
 \vskip 5mm
@@ -288,6 +286,8 @@ Through varying the number of hidden layers within our neural network architectu
 \end{center}
 \vskip -5mm
 \end{figure}
+
+Through varying the number of hidden layers within our neural network architecture (ranging between three and six hidden layers), it is possible to plot the training accuracy and validation accuracy for each layer increment. The learning rate was kept at a value of 0.2 and the ELU activation function was chosen, as it provided the best performance in the previous experiment. It was found that the accuracy generally levels out to the same point regardless of the number of layers. However, it is shown in figure ~\ref{fig:dnn-accuracy} that the more hidden layers that are used, the longer the time to convergence. The behaviour of a deeper network appears similar to initially increasing the step size.
 
 \section{Conclusions}
 \label{sec:concl}
